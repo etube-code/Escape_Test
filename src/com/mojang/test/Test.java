@@ -13,6 +13,11 @@ public class Test extends JComponent {
 	
 	
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public Test(int w, int h) {
 		
 		Dimension size = new Dimension(w, h);
