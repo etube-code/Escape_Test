@@ -7,17 +7,100 @@ import java.awt.Graphics;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 
-public class Test extends JComponent {
+public class Test extends JComponent implements Runnable {
+	
+	private int width, height;
+	
+	private boolean running;
+	private Thread thread;
+	
+	public Test(int width, int height) {
+		
+		Dimension size = new Dimension(width, height);
+		setPreferredSize(size);
+		
+	}
+	
+	@Override
+	public void paint(Graphics g) {
+		
+		g.setColor(Color.CYAN);
+		g.fillRect(0, 0, 640, 480);
+		
+		
+	}
+	
+	public void start(){
+		
+		if(running)
+			return;
+		running = true;
+		thread = new Thread(this);
+		thread.start();
+		
+	}
+	
+	public void run(){
+		
+		System.out.println("It's running...");
+		
+	}
+	
+	
+	
+	
+	public static void main(String[] args) {
+		
+		Test game = new Test(640, 480);
+		
+		JFrame frame = new JFrame("Escape");
+		
+		frame.add(game);
+		frame.setVisible(true);
+		frame.pack();
+		frame.setLocationRelativeTo(null);
+	
+		game.start();
+		
+		
+	}
+	
+	
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*package com.mojang.test;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+
+public class Test extends JComponent implements Runnable{
+	
+	private boolean running;
+	private Thread thread;
 	
 
 	
-	
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
 	public Test(int w, int h) {
 		
 		Dimension size = new Dimension(w, h);
@@ -29,9 +112,36 @@ public class Test extends JComponent {
     public void paint(Graphics g) {
       g.setColor(Color.RED);
       g.fillRect(0, 0, getWidth(), getHeight());
-      g.setColor(Color.GREEN);
-      g.fillArc(100, 100, 250, 250, 0, ABORT);
+
     }	
+    
+	public synchronized void start() {
+		
+		if(running) 
+			return;
+		running = true;
+		thread = new Thread(this);
+		thread.start();
+		
+	}
+
+	
+	public void run() {
+        while (running) {
+            tick();      // Mantık güncelleme
+            repaint();   // Ekranı yenile
+            try {
+                Thread.sleep(16); // ~60 FPS
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+		
+	}
+	private void tick() {
+		
+
+	}
 		
 	public static void main(String[] args) {
 		
@@ -42,55 +152,9 @@ public class Test extends JComponent {
 		frame.add(game);
 		frame.setVisible(true);
 		frame.pack();
+		game.start();
 		frame.setLocationRelativeTo(null);
 			
-	}
-	
-	
-	
-	
-	
-}
-
-/*package com.mojang.test;
-
-import java.awt.Dimension;
-
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-
-public class Test extends JComponent {
-	
-public static Test game = new Test();	
-	
-	
-	
-	public Test() {
-		
-		Dimension size = new Dimension(640, 480);
-		setPreferredSize(size);
-		
-		
-		
-	}
-	
-	
-	public static void main(String[] args) {
-		
-		JFrame frame = new JFrame("Escape");
-		
-		
-		
-		frame.add(game);
-		frame.setVisible(true);
-		frame.pack();
-		frame.setLocationRelativeTo(null);
-		
-		
-		
-		
-		
-		
 	}
 	
 	
